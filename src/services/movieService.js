@@ -14,9 +14,27 @@ exports.getAll = () => {
 }
 
 exports.getOne = (movieId) => {
-    const movie =  movies.find(movie => movie._id == movieId);
+    const movie = movies.find(movie => movie._id == movieId);
 
     return movie;
+}
+
+exports.search = (title, genre, year) => {
+    let newMovies = movies.slice();
+
+    if (title) {
+        newMovies = newMovies.filter(movie => movie.title.toLowerCase().includes(title.toLowerCase()));
+    }
+
+    if (genre) {
+        newMovies = newMovies.filter(movie => movie.genre.toLowerCase() === genre.toLowerCase());
+    }
+
+    if (year) {
+        newMovies = newMovies.filter(movie => movie.year === year);
+    }
+
+    return newMovies;
 }
 
 exports.create = (movieData) => {
