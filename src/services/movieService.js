@@ -1,46 +1,26 @@
 const Movie = require('../models/Movie');
 
-const movies = [{
-    _id: 1,
-    title: 'Jungle Cuise',
-    genre: 'Advunture',
-    director: 'Spilberg',
-    year: '2019',
-    imageUrl: '/img/jungle-cruise.jpeg',
-    rating: '5',
-    description: 'Description movie'
-}];
+exports.getAll = () =>  Movie.find();
 
-exports.getAll = () => {
-    return movies.slice();
-}
-
-exports.getOne = (movieId) => {
-    const movie = movies.find(movie => movie._id == movieId);
-
-    return movie;
-}
-
-exports.search = (title, genre, year) => {
-    let newMovies = movies.slice();
-
+//TODO: Filter result in mongoDB
+exports.search = async (title, genre, year) => {
+    let newMovies = await Movie.find().lean();
+    
     if (title) {
         newMovies = newMovies.filter(movie => movie.title.toLowerCase().includes(title.toLowerCase()));
     }
-
+    
     if (genre) {
         newMovies = newMovies.filter(movie => movie.genre.toLowerCase() === genre.toLowerCase());
     }
-
+    
     if (year) {
         newMovies = newMovies.filter(movie => movie.year === year);
     }
-
+    
     return newMovies;
 }
 
-exports.create = async (movieData) => {
-    const result = await Movie.create(movieData);
+exports.getOne = (movieId) => Movie.findById(movieId);
 
-    return result;
-};
+exports.create = (movieData) =>  Movie.create(movieData);
