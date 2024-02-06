@@ -19,7 +19,7 @@ router.post('/create', async (req, res) => {
     }
 });
 
-router.get('/movies/:movieId', async(req, res) => {
+router.get('/movies/:movieId', async (req, res) => {
     const movieId = req.params.movieId;
     const movie = await movieService.getOne(movieId).lean();
 
@@ -29,8 +29,10 @@ router.get('/movies/:movieId', async(req, res) => {
     res.render('details', { movie });
 });
 
-router.get('/movies/:movieId/attach', (req, res) => {
-    res.render('movie/attach');
+router.get('/movies/:movieId/attach', async (req, res) => {
+    const movie = await movieService.getOne(req.params.movieId).lean();
+
+    res.render('movie/attach', { ...movie });
 });
 
 module.exports = router;
