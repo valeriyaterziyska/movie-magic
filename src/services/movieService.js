@@ -3,22 +3,22 @@ const Movie = require('../models/Movie');
 exports.getAll = () => Movie.find();
 
 //TODO: Filter result in mongoDB
-exports.search = async (title, genre, year) => {
-    let newMovies = await Movie.find().lean();
+exports.search = (title, genre, year) => {
+    let query = {};
 
     if (title) {
-        newMovies = newMovies.filter(movie => movie.title.toLowerCase().includes(title.toLowerCase()));
+        query.title = new RegExp(title, 'i');
     }
 
     if (genre) {
-        newMovies = newMovies.filter(movie => movie.genre.toLowerCase() === genre.toLowerCase());
+        query.genre = genre.toLowerCase();
     }
 
     if (year) {
-        newMovies = newMovies.filter(movie => movie.year === year);
+        query.year = year;
     }
 
-    return newMovies;
+    return Movie.find(query);
 }
 
 exports.getOne = (movieId) => Movie.findById(movieId).populate('casts');
