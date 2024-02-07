@@ -21,16 +21,16 @@ exports.search = async (title, genre, year) => {
     return newMovies;
 }
 
-exports.getOne = (movieId) => Movie.findById(movieId);
+exports.getOne = (movieId) => Movie.findById(movieId).populate('casts');
 
 exports.create = (movieData) => Movie.create(movieData);
 
-exports.attach = (movieId, castId) => {
-    // const movie = await this.getOne(movieId);
+exports.attach = async (movieId, castId) => {
+    // return Movie.findByIdAndUpdate(movieId, { $push: { casts: castId } });
+    const movie = await this.getOne(movieId);
 
-    // //TODO: validate castid if exists
-    // movie.casts.push(castId);
-    // return movie.save();
+    //TODO: validate castid if exists
+    movie.casts.push(castId);
+    return movie.save();
 
-    Movie.findByIdAndUpdate(movieId, { $push: { casts: castId } });
 }
