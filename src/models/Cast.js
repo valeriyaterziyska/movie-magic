@@ -8,12 +8,13 @@ const castSchema = new mongoose.Schema({
     age: {
         type: Number,
         required: true,
-        min: 12,
+        min: 1,
         max: 120,
     },
     born: {
         type: String,
         required: true,
+        minLength: 10,
     },
     nameInMovie: {
         type: String,
